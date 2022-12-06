@@ -1,6 +1,10 @@
 package day2
 
+import scala.io.Source
+
 object Main {
+
+  val input = Source.fromFile("input.txt").getLines.mkString("\n")
 
   sealed trait Weapon
 
@@ -8,8 +12,7 @@ object Main {
   case object Paper extends Weapon
   case object Scissor extends Weapon
 
-
-  def whoWins(enemy: Weapon, me:Weapon) = {
+  def getPointsOfRound(enemy: Weapon, me:Weapon) = {
       val score = enemy match {
         case Rock => me match {
           case Rock => 3
@@ -27,18 +30,39 @@ object Main {
           case Scissor => 3
         }
       }
-
-      s"Score: ${score}"
+      score
   }
 
-  val entities = Map("A" -> Rock)
+  def getScorePerWeapon(weaponOfChoie: Weapon) = {
+    weaponOfChoie match {
+      case Rock => 1
+      case Paper => 2
+      case Scissor => 3
+    }
+  }
 
-  println(entities.get("A").getOrElse(""))
+  val entities = Map("A" -> Rock, "B" -> Paper, "C" -> Scissor)
 
-  println(whoWins(Rock, Scissor))
-  println(whoWins(Paper, Scissor))
+  val encryptedEntities = Map("X" -> Rock, "Y" -> Paper, "Z" -> Scissor)
 
+  val list = input.split("\n").map {k =>
+    val split = k.split(" ")
+    split match {
+      case Array(x, y) =>
+        (entities.get(x).getOrElse(null), encryptedEntities.get(y).getOrElse(null))
+    }
+  }.toList
 
+  val totalScorePerGame = list.map { k => k match {
+    case(x, y) => {
+      val scoreRound = getPointsOfRound(x, y)
+      val scoreChoice = getScorePerWeapon(y)
+
+      scoreRound + scoreChoice
+    }
+  }}.sum
+
+  println(totalScorePerGame)
 
   def main(args:Array[String]) = {
 
