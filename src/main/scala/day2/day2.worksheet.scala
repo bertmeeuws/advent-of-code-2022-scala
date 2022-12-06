@@ -45,6 +45,7 @@ object Main {
 
   val encryptedEntities = Map("X" -> Rock, "Y" -> Paper, "Z" -> Scissor)
 
+
   val list = input.split("\n").map {k =>
     val split = k.split(" ")
     split match {
