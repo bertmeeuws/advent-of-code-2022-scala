@@ -66,6 +66,7 @@ object Main {
 
   println(result2)
 
+  //Could of used the same approach is in the badget list, but this will do ;)
   def checkForMatch(word1: String, word2: String)(duplicate: String => Unit) = {
     breakable {
       for (index1 <- 0 until word1.length) {
